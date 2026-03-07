@@ -1,0 +1,46 @@
+.box {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    cursor: grab;
+    transition: transform 0.2s ease;
+}
+
+.box:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.zone {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    padding: 80px 40px;
+    width: 300px;
+    margin: 20px auto;
+
+    color: #5c6bc0;
+    background-color: #f8f9ff;
+
+    border: 2px dashed #9fa8da;
+    border-radius: 20px;
+
+    transition: all 0.3s ease;
+}
+
+.zone.active {
+    border-color: #4caf50;
+    background-color: #f1fbf2;
+    color: #2e7d32;
+
+    animation: pulse-green 2s infinite;
+}
+
+.zone:hover {
+    border-color: #5c6bc0;
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(76, 175, 80, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+}

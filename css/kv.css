@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+}
+
+.kv {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.layer {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.smoke {
+    filter: blur(5px);
+}
+
+.bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.man {
+    width: 38%;
+    bottom: -20vh;
+    left: 50%;
+    transform: translate3d(-170%, 0, 0);
+    transition: transform 1s ease-out;
+    z-index: 3;
+}
+
+.numbers-wrapper {
+    position: absolute;
+    top: 10%;
+    left: 58%;
+    transform: translate3d(150%, 0, 0);
+    transition: transform 1s ease-out 0.2s;
+    z-index: 1;
+}
+
+.numbers {
+    position: relative;
+    display: block;
+    width: 60%;
+    will-change: transform;
+}
+
+.smoke-wrapper {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    opacity: 0;
+    transition:
+            transform 1.2s ease-out 0.4s,
+            opacity 2s ease-out 1s;
+    z-index: 2;
+}
+
+.smoke {
+    position: relative;
+    display: block;
+    transform: scale(1.1);
+    will-change: transform;
+}
+
+.kv.active .man {
+    transform: translate3d(-50%, 0, 0);
+}
+
+.kv.active .numbers-wrapper {
+    transform: translate3d(-50%, 0, 0);
+}
+
+.kv.active .smoke-wrapper {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+
+@media (max-width: 1400px) {
+    .man {
+        width: 50%;
+        bottom: -10vh;
+    }
+
+    .numbers-wrapper {
+        left: 55%;
+    }
+
+    .numbers {
+        width: 80%;
+    }
+
+    .smoke-wrapper {
+        bottom:15%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .numbers-wrapper {
+        left: 52%;
+    }
+
+    .numbers {
+        width: 80%;
+    }
+
+    .smoke-wrapper {
+        bottom:15%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .man {
+        width: 60%;
+    }
+}
+
+@media (max-width: 768px) {
+    .man {
+        width: 70%;
+        bottom: -2vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .man {
+        width: 100%;
+        bottom: 0;
+    }
+
+    .numbers {
+        width: 100%;
+    }
+}
