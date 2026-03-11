@@ -5,19 +5,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const frameCount = 24;
     const images = [];
+    let rafId = null;
 
     const currentFrame = (index) =>
         `assets/frames/frame-${String(index + 1).padStart(3, "0")}.jpg`;
 
     for (let i = 0; i < frameCount; i++) {
         const img = new Image();
+        img.onload = () => {
+            updateFrame();
+        };
         img.src = currentFrame(i);
+        img.loading = "eager";
         images.push(img);
     }
 
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const viewportWidth = document.documentElement.clientWidth;
+        const viewportHeight = window.innerHeight;
+
+        canvas.style.width = `${viewportWidth}px`;
+        canvas.style.height = `${viewportHeight}px`;
+        canvas.width = viewportWidth;
+        canvas.height = viewportHeight;
 
         updateFrame();
     }
@@ -32,15 +42,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+        const canvasRatio = canvas.width / canvas.height;
+        const imgRatio = img.width / img.height;
+
+        let drawWidth;
+        let drawHeight;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        if (imgRatio > canvasRatio) {
+            drawHeight = canvas.height;
+            drawWidth = drawHeight * imgRatio;
+            offsetX = (canvas.width - drawWidth) / 2;
+        } else {
+            drawWidth = canvas.width;
+            drawHeight = drawWidth / imgRatio;
+            offsetY = (canvas.height - drawHeight) / 2;
+        }
+
+        ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight)
     }
 
     function updateFrame() {
         const scrollTop = window.scrollY;
 
-        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const safeMaxScroll = Math.max(maxScroll, 1);
 
-        const scrollFraction = scrollTop / maxScroll;
+        const scrollFraction = scrollTop / safeMaxScroll;
 
         const frameIndex = Math.min(
             frameCount - 1,
@@ -51,11 +80,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.addEventListener("scroll", () => {
-        requestAnimationFrame(updateFrame)
-    })
+        if (rafId !== null) {
+            return;
+        }
 
-    images[0].onload = () => {
-        render(0)
-    }
+        rafId = requestAnimationFrame(() => {
+            rafId = null;
+            updateFrame();
+        });
+    });
+
+    updateFrame();
 
 });

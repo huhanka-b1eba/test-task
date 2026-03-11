@@ -3,6 +3,7 @@
     width: 150px;
     height: 150px;
     cursor: grab;
+    touch-action: none;
     transition: transform 0.2s ease;
 }
 
